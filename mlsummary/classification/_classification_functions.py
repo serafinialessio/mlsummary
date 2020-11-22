@@ -5,10 +5,13 @@ import seaborn as sn
 import matplotlib.pyplot as plt
 
 def _store_X(X, store_X):
-    if store_X is False:
+    if store_X is False or X is None:
         return None
     else:
-        return X
+        if isinstance(X, pd.DataFrame):
+            return X
+        else:
+            return pd.DataFrame(X)
 
 def _prior(y_true, digits):
 
@@ -139,6 +142,7 @@ def _cv_results(results, digits):
 
 def _scatter_class(X, y, palette):
     if X is None:
+        print('X must be provided. Otherwise, X_store=True')
         return None
     else:
         XX = X.copy()
@@ -152,6 +156,7 @@ def _scatter_class(X, y, palette):
 
 def _conf_plot(X, y_pred, y_true, palette, plot_pred):
     if X is None:
+        print('X must be provided. Otherwise, X_store=True')
         return None
     else:
         XX = pd.DataFrame(X).copy()

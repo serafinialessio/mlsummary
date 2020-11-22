@@ -5,13 +5,13 @@ import seaborn as sn
 import matplotlib.pyplot as plt
 
 def _store_X(X, store_X):
-    if store_X is False:
+    if store_X is False or X is None:
         return None
     else:
         if isinstance(X, pd.DataFrame):
             return X
         else:
-            return pd.DataFrame(X, columns=X.dtype.names)
+            return pd.DataFrame(X)
 
 
 def _clust_centers(centers):
@@ -23,8 +23,9 @@ def  _clust_centers_X(X, labels):
     if X is None:
         return None
     else:
-        X['labels'] = labels
-        return(X.groupby('labels').mean())
+        XX = X.copy()
+        XX['labels'] = labels
+        return(XX.groupby('labels').mean())
 
 def _clust_n(labels):
     cluster_count = pd.DataFrame(labels).value_counts()
@@ -92,6 +93,7 @@ def _ch(X, labels,digits):
 
 def _scatter_clusters(X, labels, palette):
     if X is None:
+        print('X must be provided. Otherwise, X_store=True')
         return None
     else:
         XX = X.copy()
@@ -105,13 +107,17 @@ def _scatter_clusters(X, labels, palette):
 
 def _scatter_clusters_outliers(X, labels, palette='Set2'):
 
-    XX = X.copy()
-    XX = pd.DataFrame(XX)
-
-    if labels is None:
-        sn.pairplot(XX, kind="scatter", palette=palette)
+    if X is None:
+        print('X must be provided. Otherwise, X_store=True')
+        return None
     else:
-        lbs = pd.DataFrame(labels).replace({-1: 'Outlier'})
-        XX['labels'] = lbs
-        sn.pairplot(XX, kind="scatter", hue="labels", palette=palette)
+        XX = X.copy()
+        XX = pd.DataFrame(XX)
+
+        if labels is None:
+            sn.pairplot(XX, kind="scatter", palette=palette)
+        else:
+            lbs = pd.DataFrame(labels, index=XX.index).replace({-1: 'Outlier'})
+            XX['labels'] = lbs
+            sn.pairplot(XX, kind="scatter", hue="labels", palette=palette)
     plt.show()

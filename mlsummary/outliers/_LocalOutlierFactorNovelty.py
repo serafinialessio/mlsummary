@@ -10,7 +10,7 @@ class LocalOutlierFactorNoveltySummary:
         self.model = obj
         self.n_class = np.shape(obj.classes_)[0]
         self.labels = obj.classes_
-        self.variables = obj.n_features
+        self.variables = obj.n_features_in_
         self.labels_pred = y_pred
         self.labels_true = y_true
         self.priors_weight, self.prior_size = _prior(y_true, digits)
@@ -33,7 +33,7 @@ class LocalOutlierFactorNoveltySummary:
     def describe(self):
         print('Local Outlier Factor novelty algorithm')
         print('------------------')
-        print('Number of class: {}'.format(self.n_class))
+        print('Number of clusters: {}'.format(self.n_clusters))
         print('Metric: {}'.format(self.metric))
         print('Radius: {}'.format(self.radius))
         print('Power Minkowski metric: {}'.format(self.p))

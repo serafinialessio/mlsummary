@@ -7,18 +7,14 @@ from mlsummary.outliers._outliers_functions import _clustering_metrics, _clust_w
 class IsolationForestSummary:
     def __init__(self, obj, X, labels_true=None, store_X=False, digits = 3):
         self.model = obj
-        self.n_clusters = obj.n_clusters
-        self.variables = obj.n_features
         self.labels = obj.predict(X)
-        self.SIL, self.DB, self.CH = _clustering_metrics(obj.labels_, X, digits)
-        self.centers = _clust_centers_X(X, obj.clustering.labels_)
-        self.labels_names = np.unique(obj.labels_)
-        self.cluster_size, self.cluster_weights = _clust_weight(obj.labels_)
-        self.ARI, self.FM = _clustering_evaluation(obj.labels_, labels_true, digits)
-        self.iter = obj.n_iter_
-        self.init = obj.n_init
-        self.init_type = obj.init
-        self.algorithm_type = obj._algorithm
+        self.n_clusters = np.unique(self.labels)
+        self.variables = obj.n_features_in_
+        self.SIL, self.DB, self.CH = _clustering_metrics(self.labels, X, digits)
+        self.centers = _clust_centers_X(X, self.labels)
+        self.labels_names = np.unique(self.labels)
+        self.cluster_size, self.cluster_weights = _clust_weight(self.labels)
+        self.ARI, self.FM = _clustering_evaluation(self.labels, labels_true, digits)
         self.X = _store_X(X, store_X)
         self.n_estimators = obj.n_estimators
         self.base_estimator = obj.base_estimator_
@@ -32,14 +28,11 @@ class IsolationForestSummary:
     def describe(self):
         print('Isolation Forest algorithm')
         print('------------------')
-        print('Number of class: {}'.format(self.n_class))
-        print('Metric: {}'.format(self.metric))
-        print('Radius: {}'.format(self.radius))
-        print('Power Minkowski metric: {}'.format(self.p))
+        print('Number of clusters: {}'.format(self.n_clusters))
         print('Contamination: {}'.format(self.contamination))
-        print('Algorithm: {}'.format(self.fit_method))
-        print('Novelty detection: {}'.format(self.novelty))
-        print('Labels name: {}'.format(self.labels_names))
+        print('Number of estimators: {}'.format(self.n_estimators))
+        print('Estimator: {}'.format(self.base_estimator))
+        print('Max samples: {}'.format(self.max_samples))
         if self.ARI is not None:
             print('Adjusted Rand Index: {}'.format(self.ARI))
         if self.FM is not None:
@@ -63,8 +56,6 @@ class IsolationForestSummary:
     def plot(self, X = None, palette='Set2'):
         if X is None:
             X = self.X
-        elif self.X is None:
-            X = None
 
         labels = self.labels
 
