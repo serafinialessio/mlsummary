@@ -1,8 +1,7 @@
 import numpy as np
 import pandas as pd
 from mlsummary.clustering._clustering_functions import _clust_weight, _clustering_metrics, \
-    _clustering_evaluation, _store_X, _fm, _ari, _sil, _db, _ch, _clust_centers_X
-from mlsummary.outliers._outliers_functions import _scatter_clusters_outliers
+    _clustering_evaluation, _store_X, _fm, _ari, _sil, _db, _ch, _clust_centers_X, _scatter_clusters_outliers
 
 class dbscanSummary:
     def __init__(self, obj, X=None, labels_true=None, store_X=False, digits = 3):

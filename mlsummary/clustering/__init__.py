@@ -1,9 +1,9 @@
-from .kmeans import kmeansSummary
-from .gmm import gmmSummary
-from .MeanShift import MeanShiftSummary
-from .AffinityPropagation import AffinityPropagationSummary
-from .dbscan import dbscanSummary
-from .optics import opticsSummary
+from ._kmeans import kmeansSummary
+from ._gmm import gmmSummary
+from ._MeanShift import MeanShiftSummary
+from ._AffinityPropagation import AffinityPropagationSummary
+from ._dbscan import dbscanSummary
+from ._optics import opticsSummary
 
 
 

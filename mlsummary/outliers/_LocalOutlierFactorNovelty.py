@@ -1,5 +1,7 @@
 import numpy as np
-from mlsummary.classification._classification_functions import _class_pred, _class_centers, _store_X, _scatter_class
+import pandas as pd
+from mlsummary.classification._classification_functions import _class_pred, _store_X, _scatter_class, \
+    _prior
 
 
 class LocalOutlierFactorNoveltySummary:
@@ -11,7 +13,7 @@ class LocalOutlierFactorNoveltySummary:
         self.variables = obj.n_features
         self.labels_pred = y_pred
         self.labels_true = y_true
-        self.class_prior = obj.priors_
+        self.priors_weight, self.prior_size = _prior(y_true, digits)
         self.y_pred, self.y_true, self.y_pred_prob, self.class_weight, self.class_size, self.acc, \
             self.prc, self.rcl, self.f1, self.conf, self.ce = _class_pred(obj, X, y_pred, y_true, digits)
         self.X = _store_X(X, store_X)

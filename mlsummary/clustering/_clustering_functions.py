@@ -102,3 +102,16 @@ def _scatter_clusters(X, labels, palette):
             XX['labels'] = labels
             sn.pairplot(XX, kind="scatter", hue="labels", palette=palette)
     plt.show()
+
+def _scatter_clusters_outliers(X, labels, palette='Set2'):
+
+    XX = X.copy()
+    XX = pd.DataFrame(XX)
+
+    if labels is None:
+        sn.pairplot(XX, kind="scatter", palette=palette)
+    else:
+        lbs = pd.DataFrame(labels).replace({-1: 'Outlier'})
+        XX['labels'] = lbs
+        sn.pairplot(XX, kind="scatter", hue="labels", palette=palette)
+    plt.show()
