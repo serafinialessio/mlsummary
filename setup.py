@@ -5,7 +5,7 @@ setup(
     version='0.1.0',
     install_requires=['numpy', 'pandas', 'scikit-learn', 'mlxtend'],
     #packages=['mlsummary'],
-    url='',
+    url='https://github.com/serafinialessio/mlsummary',
     license='MIT',
     author='Alessio Serafini',
     author_email='srf.alessio@gmail.com',
