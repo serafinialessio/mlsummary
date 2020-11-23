@@ -53,8 +53,6 @@ class AffinityPropagationSummary:
     def plot(self, X = None, palette='Set2'):
         if X is None:
             X = self.X
-        elif self.X is None:
-            X = None
 
         labels = self.labels
 
