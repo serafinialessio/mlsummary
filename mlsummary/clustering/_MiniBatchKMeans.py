@@ -1,5 +1,4 @@
 import numpy as np
-import pandas as pd
 from mlsummary.clustering._clustering_functions import _clust_weight, _clustering_metrics, \
     _clust_centers, \
     _clustering_evaluation, _store_X, _scatter_clusters, _fm, _ari, _sil, _db, _ch
@@ -54,8 +53,6 @@ class MiniBatchKMeansSummary:
     def plot(self, X = None, palette='Set2'):
         if X is None:
             X = self.X
-        elif self.X is None:
-            X = None
 
         labels = self.labels
 

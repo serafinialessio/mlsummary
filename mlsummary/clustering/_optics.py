@@ -8,13 +8,13 @@ from mlsummary.outliers._outliers_functions import _scatter_clusters_outliers
 class opticsSummary:
     def __init__(self, obj, X=None, labels_true=None, store_X=False, digits = 3):
         self.model = obj
-        self.n_clusters = obj.n_clusters
-        self.variables = np.shape(obj.clustering.components_)[1]
+        self.n_clusters = np.unique(obj.labels_).shape[0]
+        self.variables = obj.n_features_in_
         self.SIL, self.DB, self.CH = _clustering_metrics(obj.labels_, X, digits)
-        self.centers = _clust_centers_X(X, obj.clustering.labels_)
-        self.labels = obj.clustering.labels_
+        self.centers = _clust_centers_X(X, obj.labels_)
+        self.labels = obj.labels_
         self.labels_names = obj.n_features_in_
-        self.cluster_size, self.cluster_weights = _clust_weight(obj.clustering.labels_)
+        self.cluster_size, self.cluster_weights = _clust_weight(obj.labels_)
         self.ARI, self.FM = _clustering_evaluation(obj.labels_, labels_true, digits)
         self.eps = obj.eps
         self.max_eps = obj.max_eps
@@ -64,8 +64,6 @@ class opticsSummary:
     def plot(self, X = None, palette='Set2'):
         if X is None:
             X = self.X
-        elif self.X is None:
-            X = None
 
         labels = self.labels
 

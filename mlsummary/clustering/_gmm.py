@@ -2,7 +2,7 @@ import numpy as np
 import pandas as pd
 from mlsummary.clustering._clustering_functions import _clust_weight, _clustering_metrics, \
     _clust_centers, \
-    _clustering_evaluation, _store_X, _scatter_clusters, _fm, _ari, _sil, _db, _ch, _clust_proba
+    _clustering_evaluation, _store_X, _scatter_clusters, _fm, _ari, _sil, _db, _ch, _clust_proba, _criterion_gmm
 
 
 class gmmSummary:
@@ -18,6 +18,7 @@ class gmmSummary:
         self.cluster_weights = pd.DataFrame(obj.weights_)
         self.ARI, self.FM = _clustering_evaluation(self.labels, labels_true, digits)
         self.SIL, self.DB, self.CH = _clustering_metrics(self.labels, X, digits)
+        self.BIC, self.AIC = _criterion_gmm(obj, X, digits)
         self.iter = obj.n_iter_
         self.init = obj.n_init
         self.init_type = obj.init_params
@@ -31,6 +32,8 @@ class gmmSummary:
         print('Initialization: {}'.format(self.init_type))
         print('Number of initialisations: {}'.format(self.init))
         print('Labels name: {}'.format(self.labels_names))
+        if self.BIC is not None:
+            print('BIC: {}'.format(self.BIC))
         if self.ARI is not None:
             print('Adjusted Rand Index: {}'.format(self.ARI))
         if self.FM is not None:
@@ -43,9 +46,7 @@ class gmmSummary:
             print('Calinski Harabasz: {}'.format(self.CH))
         if self.cluster_size is not None:
             print('Clusters weights: \n {}'.format(self.cluster_size.to_frame().transpose().to_string(index=False)))
-        print('Clusters weights: \n {}'.format(self.cluster_weights.to_frame().transpose().to_string(index=False)))
         # print('Cluster centers: \n {}'.format(self.centers))
-        # print('Available attributes: \n {}'.format(self.__dict__.keys()))
 
     def __str__(self):
         return 'Gaussian Mixture Models with {} components and {} covariance \n Available attributes: \n {}'.format(self.components, self.covariance_type ,self.__dict__.keys())
@@ -56,8 +57,6 @@ class gmmSummary:
     def plot(self, X=None, palette='Set2'):
         if X is None:
             X = self.X
-        elif self.X is None:
-            X = None
 
         labels = self.labels
 

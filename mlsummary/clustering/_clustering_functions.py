@@ -46,13 +46,25 @@ def _clust_proba(obj, X, labels):
         count = pd.DataFrame(labels).value_counts()
 
     if X is not None:
-        labels = obj.predict(X)
+        if labels is None:
+            labels = obj.predict(X)
         proba = obj.predict_proba(X)
         clusters_col_names = ['Cluster ' + str(x + 1) for x in range(np.shape(proba)[1])]
         proba = pd.DataFrame(obj.predict_proba(X), columns = clusters_col_names)
         count = pd.DataFrame(labels).value_counts()
 
     return labels, proba, count
+
+def _criterion_gmm(obj, X, digits):
+
+    AIC = None
+    BIC = None
+
+    if X is not None:
+        AIC = round(obj.aic(X),digits)
+        BIC = round(obj.bic(X), digits)
+
+    return BIC, AIC
 
 def _clustering_evaluation(label, labels_true, digits):
     if labels_true is None:

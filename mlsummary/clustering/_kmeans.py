@@ -1,5 +1,4 @@
 import numpy as np
-import pandas as pd
 from mlsummary.clustering._clustering_functions import _clust_weight, _clustering_metrics, \
     _clust_centers, \
     _clustering_evaluation, _store_X, _scatter_clusters, _fm, _ari, _sil, _db, _ch
@@ -44,7 +43,6 @@ class kmeansSummary:
         print('Clusters weights: \n {}'.format(self.cluster_size.to_frame().transpose().to_string(index = False)))
         print('Clusters weights: \n {}'.format(self.cluster_weights.to_frame().transpose().to_string(index = False)))
         #print('Cluster centers: \n {}'.format(self.centers))
-        #print('Available attributes: \n {}'.format(self.__dict__.keys()))
 
     def __str__(self):
         return 'kmeans algorithm with {} clusters \n Available attributes: \n {}'.format(self.n_clusters, self.__dict__.keys())
@@ -54,8 +52,6 @@ class kmeansSummary:
     def plot(self, X = None, palette='Set2'):
         if X is None:
             X = self.X
-        elif self.X is None:
-            X = None
 
         labels = self.labels
 
