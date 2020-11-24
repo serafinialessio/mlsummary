@@ -5,6 +5,7 @@ from ._AffinityPropagation import AffinityPropagationSummary
 from ._dbscan import dbscanSummary
 from ._optics import opticsSummary
 from._MiniBatchKMeans import MiniBatchKMeansSummary
+from._fuzzyKmeansSummary import fuzzykmeansSummary
 
 
 
@@ -15,5 +16,6 @@ __all__ = [
     "AffinityPropagationSummary",
     "dbscanSummary",
     "opticsSummary",
-    "MiniBatchKMeansSummary"
+    "MiniBatchKMeansSummary",
+    "fuzzykmeansSummary"
 ]

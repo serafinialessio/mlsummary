@@ -35,6 +35,7 @@ Gaussian mixture models  | scikit-learn
 DBSCAN  | scikit-learn
 OPTICS  | scikit-learn
 Affinity Propagation  | scikit-learn
+Fuzzy K-means | fuzzy-c-means
 
 **Available algorithms outliers detection :**
 

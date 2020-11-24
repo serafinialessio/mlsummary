@@ -88,7 +88,15 @@ def _clustering_metrics(labels, X, digits):
 
     return SIL, DB, CH
 
+def MAP(probs):
+    probs = pd.DataFrame(probs)
+    nrows = range(len(probs))
+    cl = probs.columns.values
+    mapped = pd.DataFrame(columns = ['Class'], index = nrows)
 
+    for ind in nrows:
+        mapped.iloc[ind] = cl[(probs.iloc[ind].idxmax())]
+    return mapped
 
 def _ari(labels, labels_true, digits):
     return round(adjusted_rand_score(labels_true, labels),digits)
