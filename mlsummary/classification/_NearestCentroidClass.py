@@ -24,9 +24,6 @@ class NearestCentroidClassSummary:
         self.X_train = _store_X(X_train, store_X)
         self.shrink_threshold = obj.shrink_threshold
         self.metric = obj.metric
-        if self.priors_weight is not None:
-            print('Priors weight: \n {}'.format(self.priors_weight.to_frame().transpose().to_string(index=False)))
-            print('Priors size: \n {}'.format(self.prior_size.to_frame().transpose().to_string(index=False)))
 
 
 
@@ -36,6 +33,9 @@ class NearestCentroidClassSummary:
         print('------------------')
         print('Number of class: {}'.format(self.n_class))
         print('Metric: {}'.format(self.metric))
+        if self.priors_weight is not None:
+            print('Priors weight: \n {}'.format(self.priors_weight.to_frame().transpose().to_string(index=False)))
+            print('Priors size: \n {}'.format(self.prior_size.to_frame().transpose().to_string(index=False)))
 
         if self.class_weight_train is not None:
             print('------')
@@ -73,15 +73,7 @@ class NearestCentroidClassSummary:
         return 'Nearest Centroid {} with class \n Available attributes: \n {}'.format(self.n_class, self.__dict__.keys())
 
 
-    def plot_class(self, X, y, palette = 'Set2'):
-
-        if X is None:
-            X = self.X
-        elif self.X is None:
-            X = None
-
-        if y is None:
-            y = self.y_pred
+    def plot(self, X, y, palette = 'Set2'):
 
         _scatter_class(X = X, y = y, palette = palette)
 

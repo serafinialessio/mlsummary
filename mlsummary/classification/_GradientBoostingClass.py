@@ -2,7 +2,7 @@ import numpy as np
 from sklearn.tree import plot_tree
 
 from mlsummary.classification._classification_functions import _class_pred, _store_X, _scatter_class, \
-    _features_important, _prior, _cv_results
+    _features_important, _prior, _cv_results, _important_plot
 
 
 class GradientBoostingClassSummary:
@@ -32,9 +32,6 @@ class GradientBoostingClassSummary:
         self.max_features = obj.max_features
         self.max_leaf_nodes = obj.max_leaf_nodes
         self.feature_importances = _features_important(obj.feature_importances_, X)
-        if self.priors_weight is not None:
-            print('Priors weight: \n {}'.format(self.priors_weight.to_frame().transpose().to_string(index=False)))
-            print('Priors size: \n {}'.format(self.prior_size.to_frame().transpose().to_string(index=False)))
 
     def describe(self):
         print('Gradient Boosting classifier algorithm')
@@ -46,6 +43,10 @@ class GradientBoostingClassSummary:
         print('Minimum number of samples leaf node: {}'.format(self.min_samples_leaf))
         print('Minimum number of samples: {}'.format(self.min_samples_split))
         print('Minimal Cost-Complexity Pruning: {}'.format(self.ccp_alpha))
+
+        if self.priors_weight is not None:
+            print('Priors weight: \n {}'.format(self.priors_weight.to_frame().transpose().to_string(index=False)))
+            print('Priors size: \n {}'.format(self.prior_size.to_frame().transpose().to_string(index=False)))
 
         if self.class_weight_train is not None:
             print('------')
@@ -84,18 +85,12 @@ class GradientBoostingClassSummary:
         return 'Gradient Boosting classifier with {} class \n Available attributes: \n {}'.format(self.n_class,
                                                                                               self.__dict__.keys())
 
-    def plot_class(self, X, y, palette='Set2'):
-
-        if X is None:
-            X = self.X
-        elif self.X is None:
-            X = None
-
-        if y is None:
-            y = self.y_pred
+    def plot(self, X, y, palette='Set2'):
 
         _scatter_class(X=X, y=y, palette=palette)
 
+    def plot_important(self):
+        _important_plot(self.feature_importances)
 
 ## Search for both GridSearchCV and RandomizedSearchCV object
 

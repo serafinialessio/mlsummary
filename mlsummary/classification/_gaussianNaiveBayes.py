@@ -1,7 +1,7 @@
 import numpy as np
 import pandas as pd
 from mlsummary.classification._classification_functions import _class_pred, _store_X, _scatter_class, _prior, \
-    _cv_results
+    _cv_results, _clust_centers
 
 
 class gnbSummary:
@@ -12,27 +12,28 @@ class gnbSummary:
         self.n_class = np.shape(obj.classes_)[0]
         self.labels = obj.classes_
         self.variables = np.shape(obj.theta_)[1]
-        self.priors_weight, self.prior_size = _prior(y_true, digits)
+        self.priors_weight = pd.Series(obj.class_prior_)
         self.labels_pred, self.labels_true, self.y_pred_prob, self.class_weight, self.class_size, self.acc, \
             self.prc, self.rcl, self.f1, self.conf, self.y_train, self.y_pred_prob_train, \
             self.class_weight_train, self.class_size_train, self.acc_train, \
             self.prc_train, self.rcl_train, self.f1_train, self.conf_train, self.ce, self.ce_train, self.y_true_train = _class_pred(
                 obj, X, X_train, y_pred, y_train, y_true, y_true_train, prob_return, digits)
-        self.means = obj.theta_
+        self.means = _clust_centers(obj.theta_)
         self.X = _store_X(X, store_X)
         self.X_train = _store_X(X_train, store_X)
         self.sigma = pd.DataFrame(obj.sigma_)
         self.epsilon = obj.epsilon_
         self.var_smoothing = obj.var_smoothing
-        if self.priors_weight is not None:
-            print('Priors weight: \n {}'.format(self.priors_weight.to_frame().transpose().to_string(index=False)))
-            print('Priors size: \n {}'.format(self.prior_size.to_frame().transpose().to_string(index=False)))
+
 
     def describe(self):
         print('Gaussian naive bayes algorithm')
         print('------------------')
         print('Number of class: {}'.format(self.n_class))
         print('Variance smoothing: {}'.format(self.var_smoothing))
+        if self.priors_weight is not None:
+            print('Priors weight: \n {}'.format(self.priors_weight.to_frame().transpose().to_string(index=False)))
+            #print('Priors size: \n {}'.format(self.prior_size.to_frame().transpose().to_string(index=False)))
 
         if self.class_weight_train is not None:
             print('------')
@@ -70,15 +71,7 @@ class gnbSummary:
         return 'Gaussian naive bayes with {} class \n Available attributes: \n {}'.format(self.n_class, self.__dict__.keys())
 
 
-    def plot_class(self, X, y, palette = 'Set2'):
-
-        if X is None:
-            X = self.X
-        elif self.X is None:
-            X = None
-
-        if y is None:
-            y = self.y_pred
+    def plot(self, X, y, palette = 'Set2'):
 
         _scatter_class(X = X, y = y, palette = palette)
 

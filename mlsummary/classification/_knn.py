@@ -28,9 +28,6 @@ class knnSummary:
         self.p = obj.p
         self.metric_params = obj.metric_params
         self.weights = obj.weights
-        if self.priors_weight is not None:
-            print('Priors weight: \n {}'.format(self.priors_weight.to_frame().transpose().to_string(index=False)))
-            print('Priors size: \n {}'.format(self.prior_size.to_frame().transpose().to_string(index=False)))
 
     def describe(self):
         print('k-nearest neighbors classifier algorithm')
@@ -40,6 +37,10 @@ class knnSummary:
         print('Power Minkowski metric: {}'.format(self.p))
         print('Radius: {}'.format(self.radius))
         print('Algorithm: {}'.format(self.fit_method))
+
+        if self.priors_weight is not None:
+            print('Priors weight: \n {}'.format(self.priors_weight.to_frame().transpose().to_string(index=False)))
+            print('Priors size: \n {}'.format(self.prior_size.to_frame().transpose().to_string(index=False)))
 
         if self.class_weight_train is not None:
             print('------')
@@ -77,15 +78,8 @@ class knnSummary:
         return 'k-nearest neighbors {} with class \n Available attributes: \n {}'.format(self.n_class, self.__dict__.keys())
 
 
-    def plot_class(self, X, y, palette = 'Set2'):
+    def plot(self, X, y, palette = 'Set2'):
 
-        if X is None:
-            X = self.X
-        elif self.X is None:
-            X = None
-
-        if y is None:
-            y = self.y_pred
 
         _scatter_class(X = X, y = y, palette = palette)
 

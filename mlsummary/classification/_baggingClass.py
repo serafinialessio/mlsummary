@@ -32,9 +32,6 @@ class baggingClassSummary:
         self.max_features = obj.max_features
         self.bootstrap = obj.bootstrap
         self.bootstrap_features = obj.bootstrap_features
-        if self.priors_weight is not None:
-            print('Priors weight: \n {}'.format(self.priors_weight.to_frame().transpose().to_string(index=False)))
-            print('Priors size: \n {}'.format(self.prior_size.to_frame().transpose().to_string(index=False)))
 
 
     def describe(self):
@@ -51,6 +48,10 @@ class baggingClassSummary:
         print('Minimum number of samples leaf node: {}'.format(self.min_samples_leaf))
         print('Minimum number of samples: {}'.format(self.min_samples_split))
         print('Minimal Cost-Complexity Pruning: {}'.format(self.ccp_alpha))
+
+        if self.priors_weight is not None:
+            print('Priors weight: \n {}'.format(self.priors_weight.to_frame().transpose().to_string(index=False)))
+            print('Priors size: \n {}'.format(self.prior_size.to_frame().transpose().to_string(index=False)))
 
         if self.class_weight_train is not None:
             print('------')
@@ -88,15 +89,7 @@ class baggingClassSummary:
         return 'Bagging classifier with {} class \n Available attributes: \n {}'.format(self.n_class, self.__dict__.keys())
 
 
-    def plot_class(self, X, y, palette = 'Set2'):
-
-        if X is None:
-            X = self.X
-        elif self.X is None:
-            X = None
-
-        if y is None:
-            y = self.y_pred
+    def plot(self, X, y, palette = 'Set2'):
 
         _scatter_class(X = X, y = y, palette = palette)
 

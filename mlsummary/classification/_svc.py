@@ -1,7 +1,8 @@
 import numpy as np
 import pandas as pd
 
-from mlsummary.classification._classification_functions import _class_pred, _store_X, _scatter_class, _cv_results
+from mlsummary.classification._classification_functions import _class_pred, _store_X, _scatter_class, _cv_results, \
+    _prior
 
 
 class svcSummary:
@@ -12,6 +13,7 @@ class svcSummary:
         self.n_class = np.shape(obj.classes_)[0]
         self.labels = obj.classes_
         self.variables = obj.n_features_in_
+        self.priors_weight, self.prior_size = _prior(y_true, digits)
         self.labels_pred, self.labels_true, self.y_pred_prob, self.class_weight, self.class_size, self.acc, \
         self.prc, self.rcl, self.f1, self.conf, self.y_train, self.y_pred_prob_train, \
         self.class_weight_train, self.class_size_train, self.acc_train, \
@@ -27,8 +29,7 @@ class svcSummary:
         self.support_vectors_ = pd.DataFrame(obj.support_vectors_)
         self.n_support = pd.DataFrame(obj.n_support_)
         self.decision_function = obj.decision_function_shape
-        if self.priors is not None:
-            print('Priors: \n {}'.format(self.priors.string(index=False)))
+
 
     def describe(self):
         print('Support vector machine classifier algorithm')
@@ -42,6 +43,10 @@ class svcSummary:
         print('Shrinking: {}'.format(self.shrinking))
         print('Decision function: {}'.format(self.decision_function))
         print('Number of support vectors: {}'.format(self.n_support.transpose().to_string(index=False)))
+
+        if self.priors_weight is not None:
+            print('Priors weight: \n {}'.format(self.priors_weight.to_frame().transpose().to_string(index=False)))
+            print('Priors size: \n {}'.format(self.prior_size.to_frame().transpose().to_string(index=False)))
 
         if self.class_weight_train is not None:
             print('------')
@@ -81,15 +86,7 @@ class svcSummary:
         return 'Support vector machine classifier with {} class \n Available attributes: \n {}'.format(self.n_class,
                                                                                                        self.__dict__.keys())
 
-    def plot_class(self, X, y, palette='Set2'):
-
-        if X is None:
-            X = self.X
-        elif self.X is None:
-            X = None
-
-        if y is None:
-            y = self.y_pred
+    def plot(self, X, y, palette='Set2'):
 
         _scatter_class(X=X, y=y, palette=palette)
 

@@ -13,6 +13,11 @@ def _store_X(X, store_X):
         else:
             return pd.DataFrame(X)
 
+def _clust_centers(centers):
+    clusters_col_names = ['Feature ' + str(x + 1) for x in range(np.shape(centers)[1])]
+    ct = pd.DataFrame(centers, columns = clusters_col_names)
+    return ct
+
 def _prior(y_true, digits):
 
     class_weight = None
@@ -25,7 +30,7 @@ def _prior(y_true, digits):
 
     return class_weight, class_count
 
-def _class_pred(obj, X, X_train, y_pred, y_train, y_true, y_true_train, prob_return, digits = 3):
+def _class_pred(obj, X, X_train, y_pred, y_train, y_true, y_true_train, prob_return, average = 'binary', digits = 3):
 
     y_pred_prob = None
     acc = None
@@ -48,12 +53,13 @@ def _class_pred(obj, X, X_train, y_pred, y_train, y_true, y_true_train, prob_ret
     class_count_train = None
 
 
+
     if y_pred is not None:
         labs = pd.DataFrame(y_pred)
         class_weight = round(labs.value_counts(normalize=True), digits)
         class_count = labs.value_counts(normalize=False)
         if y_true is not None:
-            if class_count.shape[0] > 2:
+            if pd.Series(y_true).unique().shape[0] > 2:
                 average = 'micro'
             acc = round(accuracy_score(y_true, y_pred),digits)
             ce = round(1-acc,digits)
@@ -73,7 +79,7 @@ def _class_pred(obj, X, X_train, y_pred, y_train, y_true, y_true_train, prob_ret
 
         if y_true is not None:
 
-            if class_count.shape[0] > 2:
+            if pd.Series(y_true).unique().shape[0] > 2:
                 average = 'micro'
             acc = round(accuracy_score(y_true, y_pred),digits)
             ce = round(1-acc,digits)
@@ -90,7 +96,7 @@ def _class_pred(obj, X, X_train, y_pred, y_train, y_true, y_true_train, prob_ret
         class_count_train = labs.value_counts(normalize=False)
         if y_true_train is not None:
 
-            if class_count_train.shape[0] > 2:
+            if pd.Series(y_true_train).unique().shape[0] > 2:
                 average = 'micro'
 
             acc_train = round(accuracy_score(y_true_train, y_train), digits)
@@ -111,7 +117,7 @@ def _class_pred(obj, X, X_train, y_pred, y_train, y_true, y_true_train, prob_ret
 
         if y_true_train is not None:
 
-            if class_count_train.shape[0] > 2:
+            if pd.Series(y_true_train).unique().shape[0] > 2:
                 average = 'micro'
 
             acc_train = round(accuracy_score(y_true_train, y_train), digits)
@@ -131,8 +137,9 @@ def _features_important(features, X):
     if X is None:
         ft = pd.Series(features).sort_values(ascending=False)
     else:
-        X = pd.DataFrame(X)
-        ft = pd.Series(features, index=X.columns).sort_values(ascending=False)
+        XX = X.copy()
+        XX = pd.DataFrame(XX)
+        ft = pd.Series(features, index=XX.columns).sort_values(ascending=False)
 
     return ft
 

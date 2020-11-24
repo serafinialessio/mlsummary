@@ -2,7 +2,7 @@ import numpy as np
 from sklearn.tree import plot_tree
 
 from mlsummary.classification._classification_functions import _class_pred, _store_X, _scatter_class, \
-    _features_important, _prior, _cv_results
+    _features_important, _prior, _cv_results, _important_plot
 
 
 class TreeClassSummary:
@@ -86,21 +86,19 @@ class TreeClassSummary:
         return 'Decision tree classifier with {} class \n Available attributes: \n {}'.format(self.n_class, self.__dict__.keys())
 
 
-    def plot_class(self, X, y, palette = 'Set2'):
-
-        if X is None:
-            X = self.X
-        elif self.X is None:
-            X = None
-
-        if y is None:
-            y = self.y_pred
+    def plot(self, X, y, palette = 'Set2'):
 
         _scatter_class(X = X, y = y, palette = palette)
 
-    def plot_tree(self, max_depth = 'None', label = 'all', impurity = True, proportion = False, ):
-        plot_tree(self.model, label = label, impurity=impurity, proportion=proportion, max_depth=max_depth)
+    def plot_tree(self, max_depth = None, label = 'all', impurity = True, proportion = False, feature_names = None):
 
+        if self.X is not None:
+            feature_names = self.X.columns
+
+        plot_tree(self.model, label = label, impurity=impurity, proportion=proportion, max_depth=max_depth, feature_names=feature_names)
+
+    def plot_important(self):
+        _important_plot(self.feature_importances)
 
 class TreeClassSummaryCV(TreeClassSummary):
     def __init__(self, obj, X=None, X_train = None, y_pred=None, y_true=None,

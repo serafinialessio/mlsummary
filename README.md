@@ -46,7 +46,7 @@ One Class Support Vector Machine | scikit-learn
 
 **Examples**:
 
-- Classification [![Binder](https://mybinder.org/badge_logo.svg)]()
+- Classification [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/serafinialessio/mlsummary/main?urlpath=lab/tree/examples/classification.ipynb)
 - Grid search cross validation [![Binder](https://mybinder.org/badge_logo.svg)]()
 - Clustering [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/serafinialessio/mlsummary/main?urlpath=lab/tree/examples/clustering.ipynb)
 - Outliers detection [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/serafinialessio/mlsummary/main?urlpath=lab/tree/examples/outliers.ipynb)

@@ -78,15 +78,7 @@ class SoftmaxRegressionSummary:
         return 'Softmax Regression classifier with {} class \n Available attributes: \n {}'.format(self.n_class, self.__dict__.keys())
 
 
-    def plot_class(self, X, y, palette = 'Set2'):
-
-        if X is None:
-            X = self.X
-        elif self.X is None:
-            X = None
-
-        if y is None:
-            y = self.y_pred
+    def plot(self, X, y, palette = 'Set2'):
 
         _scatter_class(X = X, y = y, palette = palette)
 

@@ -2,7 +2,7 @@ import numpy as np
 from sklearn.tree import plot_tree
 
 from mlsummary.classification._classification_functions import _class_pred, _store_X, _scatter_class, \
-    _features_important, _prior, _cv_results
+    _features_important, _prior, _cv_results, _important_plot
 
 
 class RandomForestClassSummary:
@@ -13,7 +13,7 @@ class RandomForestClassSummary:
         self.n_class = np.shape(obj.classes_)[0]
         self.labels = obj.classes_
         self.variables = obj.n_features_
-        self.priors = _prior(y_true, digits)
+        self.priors_weight, self.prior_size = _prior(y_true, digits)
         self.labels_pred, self.labels_true, self.y_pred_prob, self.class_weight, self.class_size, self.acc, \
             self.prc, self.rcl, self.f1, self.conf, self.y_train, self.y_pred_prob_train, \
             self.class_weight_train, self.class_size_train, self.acc_train, \
@@ -30,8 +30,7 @@ class RandomForestClassSummary:
         self.min_samples_split = obj.min_samples_split
         self.max_features = obj.max_features
         self.feature_importances = _features_important(obj.feature_importances_, X)
-        if self.priors is not None:
-            print('Priors: \n {}'.format(self.priors.string(index=False)))
+
 
 
     def describe(self):
@@ -46,6 +45,11 @@ class RandomForestClassSummary:
         print('Minimum number of samples leaf node: {}'.format(self.min_samples_leaf))
         print('Minimum number of samples: {}'.format(self.min_samples_split))
         print('Minimal Cost-Complexity Pruning: {}'.format(self.ccp_alpha))
+
+        if self.priors_weight is not None:
+            print('Priors weight: \n {}'.format(self.priors_weight.to_frame().transpose().to_string(index=False)))
+            print('Priors size: \n {}'.format(self.prior_size.to_frame().transpose().to_string(index=False)))
+
 
         if self.class_weight_train is not None:
             print('------')
@@ -83,17 +87,12 @@ class RandomForestClassSummary:
         return 'Random forest classifier with {} class \n Available attributes: \n {}'.format(self.n_class, self.__dict__.keys())
 
 
-    def plot_class(self, X, y, palette = 'Set2'):
-
-        if X is None:
-            X = self.X
-        elif self.X is None:
-            X = None
-
-        if y is None:
-            y = self.y_pred
+    def plot(self, X, y, palette = 'Set2'):
 
         _scatter_class(X = X, y = y, palette = palette)
+
+    def plot_important(self):
+        _important_plot(self.feature_importances)
 
 class RandomForestClassSummaryCV(RandomForestClassSummary):
     def __init__(self, obj, X=None, X_train = None, y_pred=None, y_true=None,

@@ -2,7 +2,7 @@ import numpy as np
 from sklearn.tree import plot_tree
 
 from mlsummary.classification._classification_functions import _class_pred, _store_X, _scatter_class, \
-    _features_important, _prior
+    _features_important, _prior, _cv_results, _important_plot
 
 
 class xgboostClassSummary:
@@ -26,8 +26,6 @@ class xgboostClassSummary:
         self.learning_rate = obj.learning_rate
         self.reg_alpha = obj.reg_alpha
         self.reg_lambda = obj.reg_lambda
-        self.estimator_weights_ = obj.estimator_weights_
-        self.estimator_errors_ = obj.estimator_errors_
         self.feature_importances = _features_important(obj.feature_importances_, X)
         self.min_child_weight = obj.min_child_weight
         self.gamma = obj.gamma
@@ -85,18 +83,12 @@ class xgboostClassSummary:
         return 'XGBoost classifier with {} class \n Available attributes: \n {}'.format(self.n_class, self.__dict__.keys())
 
 
-    def plot_class(self, X, y, palette = 'Set2'):
-
-        if X is None:
-            X = self.X
-        elif self.X is None:
-            X = None
-
-        if y is None:
-            y = self.y_pred
+    def plot(self, X, y, palette = 'Set2'):
 
         _scatter_class(X = X, y = y, palette = palette)
 
+    def plot_important(self):
+        _important_plot(self.feature_importances)
 
 ## Search for both GridSearchCV and RandomizedSearchCV object
 
