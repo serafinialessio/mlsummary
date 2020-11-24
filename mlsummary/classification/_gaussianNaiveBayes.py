@@ -91,7 +91,7 @@ class gnbSummaryCV(gnbSummary):
         super().__init__(obj.best_estimator_, X, X_train, y_pred, y_true,
                  y_train, y_true_train, store_X, prob_return, digits)
 
-    def describe(self, best_model_describe = True):
+    def describe(self, cv_result_describe = True, best_model_describe = True):
         print('Cross validation gaussian naive bayes classifier')
         print('------------------')
         print('Estimator: {}'.format(self.estimator))
@@ -100,8 +100,8 @@ class gnbSummaryCV(gnbSummary):
         print('Parameters: {}'.format(self.parameters))
         print('Best parameters: {}'.format(self.best_parameters))
         print('Best score: {}'.format(self.best_score))
-        print('Results: \n {}'.format(round(self.cv_results[['mean_test_score', 'std_test_score','rank_test_score']],3)))
-
+        if cv_result_describe:
+            print('Results: \n {}'.format(round(self.cv_results[['mean_test_score', 'std_test_score','rank_test_score']],3)))
         if best_model_describe:
             print('------------------')
             super().describe()
