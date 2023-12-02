@@ -5,6 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "mlsummary"
 description = "Summary package for machine learning algorithms."
+version= "0.0.1"
 readme = "README.md"
 authors = [{ name = "Alessio Serafini", email = "srf.alessio@gmail.com" }]
 license = { file = "LICENSE" }
