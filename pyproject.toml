@@ -1,0 +1,33 @@
+[build-system]
+requires = ["setuptools>=61.0.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "mlsummary"
+version = "0.0.1"
+description = "Summary package for machinne learning algorithms."
+readme = "README.md"
+authors = [{ name = "Alessio Serafini", email = "srf.alessio@gmail.com" }]
+license = { file = "LICENSE" }
+classifiers = [
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+]
+keywords = ["summary", "machine learning"]
+dependencies = [
+    'numpy',
+    'pandas',
+    'scikit-learn',
+    'mlxtend',
+]
+requires-python = ">=3.9"
+
+[project.optional-dependencies]
+dev = ["black", "bumpver", "isort", "pip-tools", "pytest"]
+
+[project.urls]
+Homepage = "https://github.com/serafinialessio/mlsummary"
+documentation = 'https://github.com/serafinialessio/mlsummary'
+repository = 'https://github.com/serafinialessio/mlsummary'
+Issues = "https://github.com/serafinialessio/mlsummary/issues"
