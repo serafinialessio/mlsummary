@@ -4,27 +4,37 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "mlsummary"
-version = "0.0.1"
 description = "Summary package for machinne learning algorithms."
 readme = "README.md"
 authors = [{ name = "Alessio Serafini", email = "srf.alessio@gmail.com" }]
 license = { file = "LICENSE" }
 classifiers = [
     "License :: OSI Approved :: MIT License",
+    "Operating System :: Microsoft :: Windows",
+    "Operating System :: Unix",
+    "Operating System :: MacOS",
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
     "Programming Language :: Python",
     "Programming Language :: Python :: 3",
+    "Topic :: Scientific/Engineering",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence"
 ]
-keywords = ["summary", "machine learning"]
-dependencies = [
-    'numpy',
-    'pandas',
-    'scikit-learn',
-    'mlxtend',
-]
+keywords = ["summary", "machine learning", 'artificial intelligence']
+
 requires-python = ">=3.9"
 
-[project.optional-dependencies]
-dev = ["black", "bumpver", "isort", "pip-tools", "pytest"]
+[tool.setuptools.dynamic]
+dependencies = {file = "requirements.txt"}
+
+[tool.setuptools.package-data]
+"*" = ["README.md"]
+
+[tool.setuptools]
+platforms = ["any"]
 
 [project.urls]
 Homepage = "https://github.com/serafinialessio/mlsummary"
